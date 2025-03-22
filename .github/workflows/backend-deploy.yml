@@ -33,7 +33,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest updateVisitorCountPython/
+          pytest resume-counter/updateVisitorCountPython/
 
       - name: Azure Login
         uses: azure/login@v1
@@ -52,7 +52,7 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: resumecounter-func
-          package: ./updateVisitorCountPython
+          package: ./resume-counter/updateVisitorCountPython
 
       - name: Echo backend-deploy workflow is running
         run: echo "✅ CI/CD backend-deploy workflow is running"
