@@ -45,8 +45,8 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: cloud-resume-rg
-          template: ./infra/template.json
-          parameters: ./infra/parameters.json
+          template: ./resume-counter/infra/template.json
+          parameters: ./resume-counter/infra/parameters.json
 
       - name: Deploy Azure Function App
         uses: Azure/functions-action@v1
