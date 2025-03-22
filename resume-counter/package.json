@@ -1,0 +1,17 @@
+{
+  "name": "resume-counter",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.3.0",
+    "@azure/functions": "^4.0.0"
+  },
+  "main": "src/{index.js,functions/*.js}",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

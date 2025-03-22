@@ -58,6 +58,12 @@
 
   <div class="container">
     <header>
+<div class="button-group">
+  <button onclick="scrollToContact()">Contact Me</button>
+  <button onclick="downloadResume()">Download Resume</button>
+</div>
+<p id="visitor-counter">You are visitor #1</p>
+
       <h1>Michael Walton</h1>
       <p>Minneapolis, Minnesota, 55411</p>
       <p>612-598-2403 | <a href="mailto:michaelwalton1984@gmail.com">michaelwalton1984@gmail.com</a></p>
@@ -133,5 +139,38 @@
       <p>© 2025 Michael Walton</p>
     </footer>
   </div>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <p>Email: michaelwalton1984@gmail.com</p>
+  <p>LinkedIn: <a href="https://linkedin.com/in/michael-walton84" target="_blank">linkedin.com/in/michael-walton84</a></p>
+</section>
+
+<button id="back-to-top" onclick="scrollToTop()">↑ Back to Top</button>
+
+<script>
+  function scrollToContact() {
+    document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function downloadResume() {
+    window.open('your-resume.pdf', '_blank'); // Replace with actual resume path
+  }
+
+  window.addEventListener('scroll', () => {
+    const topBtn = document.getElementById('back-to-top');
+    topBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  let visits = localStorage.getItem('visits') || 0;
+  visits++;
+  localStorage.setItem('visits', visits);
+  document.getElementById('visitor-counter').textContent = `You are visitor #${visits}`;
+</script>
+
 </body>
 </html>
