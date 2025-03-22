@@ -50,5 +50,6 @@ jobs:
         with:
           app-name: resumecounter-func
           package: ./updateVisitorCountPython
-          
-          #TriggerTest
+
+      - name: Echo backend-deploy workflow is running
+        run: echo "✅ CI/CD backend-deploy workflow is running"
