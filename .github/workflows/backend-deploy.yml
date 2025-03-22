@@ -17,6 +17,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: CI/CD trigger reached
+        run: echo "🎯 Reached CI/CD workflow"
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
