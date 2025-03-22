@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Michael Walton - Resume</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .toggle-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .dark-mode a {
+      color: #80cbc4;
+    }
+    .print-button {
+      background-color: #007acc;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .print-button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+    function printResume() {
+      window.print();
+    }
+  </script>
+</head>
+
+<body>
+  <div class="toggle-container">
+    <div class="toggle-switch">
+      <label for="darkModeToggle">🌙 Dark Mode</label>
+      <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+    </div>
+    <button class="print-button" onclick="printResume()">🖨️ Print PDF</button>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Michael Walton</h1>
+      <p>Minneapolis, Minnesota, 55411</p>
+      <p>612-598-2403 | <a href="mailto:michaelwalton1984@gmail.com">michaelwalton1984@gmail.com</a></p>
+      <p>
+        <a href="https://www.linkedin.com/in/michael-walton84" target="_blank">LinkedIn</a> |
+        <a href="https://github.com/GreyKeyStudios" target="_blank">GitHub</a>
+      </p>
+      <h2>Information Technology Professional</h2>
+      <p>Recently certified in Cisco Cybersecurity with 9 years of high-visibility customer service and a strong foundation in security principles, network defense, and threat analysis. Possesses hands-on experience in IT troubleshooting, incident response, and system administration, ensuring efficient system performance and security.</p>
+    </header>
+
+    <section>
+      <h2>Certifications & Technical Proficiencies</h2>
+      <ul>
+        <li><strong>Certifications:</strong> CompTIA A+, CCST Cybersecurity</li>
+        <li><strong>Operating Systems:</strong> Windows (Intermediate), Linux (Beginner), macOS (Beginner)</li>
+        <li><strong>Programs:</strong> Veritas NetBackup, TeamViewer, Bomgar, Dameware, NextThink, Zoom, ServiceNow, Odyssey, Jira, Azure Portal (Entra), Intune, Entrust, SCCM, Active Directory</li>
+        <li><strong>Networking:</strong> Cisco, Meraki Dashboard</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Work Experience</h2>
+      <h3>NTT Data – Senior Helpdesk Support Analyst</h3>
+      <p><em>June 2023 - Dec 2024 | Remote, Minnesota</em></p>
+      <ul>
+        <li>Diagnosed and remedied hardware, software, and network issues; Tier 2 support.</li>
+        <li>Maintained documentation and knowledge bases to expedite issue resolution.</li>
+        <li>Utilized ServiceNow for accurate incident tracking and remote tools for troubleshooting.</li>
+        <li>Collaborated with app-specific teams and product owners for escalations.</li>
+      </ul>
+
+      <h3>Veritas Technologies – Technical Support Engineer</h3>
+      <p><em>Nov 2022 - Nov 2023 | Roseville, MN</em></p>
+      <ul>
+        <li>Resolved complex NetBackup issues; collaborated with engineering on patching/hardening.</li>
+        <li>Provided guidance on encryption and security practices.</li>
+      </ul>
+
+      <h3>Compucom Systems Inc – Configuration Associate</h3>
+      <p><em>Mar 2016 - Nov 2022 | Edina, MN</em></p>
+      <ul>
+        <li>Provided remote support for large enterprises, including imaging, migration, and repair.</li>
+        <li>Created documentation and trained new hires.</li>
+        <li>Configured and supported Meraki routers, performed compliance checks.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <ul>
+        <li><strong>IT Career Lab (2025):</strong> Cisco Academy CCST Cybersecurity</li>
+        <li><strong>CompTIA A+ (2017)</strong></li>
+        <li><strong>MCTC:</strong> A.S. in Sound Arts (incomplete)</li>
+        <li><strong>High School for Recording Arts</strong> – St. Paul, MN</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects & Labs</h2>
+      <ul>
+        <li>Splunk SIEM Home Lab, Wireshark Analysis, pfSense Firewall + IDS (Suricata)</li>
+        <li>Threat Intel Automation via Python with VirusTotal, AbuseIPDB, AlienVault</li>
+        <li>TryHackMe Labs: Blue Team, Malware Analysis (Any.Run), Phishing Sim</li>
+        <li>Docker/Kubernetes Security Lab – Deployed secure cloud apps, CI/CD integration</li>
+        <li>Project GitHub: <a href="https://github.com/CyberSecurity-Projects.git">CyberSecurity-Projects</a></li>
+        <li>Music/Tech: <a href="https://github.com/GreyKeyStudios/DreamVST.git">DreamVST – AI Music DAW + Education Platform</a></li>
+        <li>Web Projects: Google Sites (Grey Key Studios, D Lee’s Cuisine), eCommerce integration</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© 2025 Michael Walton</p>
+    </footer>
+  </div>
+</body>
+</html>
