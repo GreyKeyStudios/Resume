@@ -1,16 +1,16 @@
-name: Backend Deploy
+name: Azure Function Python CI/CD
 
 on:
   push:
-    paths:
-      - 'resume-counter/**'
-      - '!resume-counter/updateVisitorCount/index.js'
-      - '!resume-counter/updateVisitorCountPython/test_*.py'
     branches:
       - main
+    paths:
+      - 'updateVisitorCountPython/**'
+      - 'infra/**'
+      - '.github/workflows/backend-deploy.yml'
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,21 +25,30 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r resume-counter/updateVisitorCountPython/requirements.txt
+          pip install -r updateVisitorCountPython/requirements.txt
           pip install pytest
 
       - name: Run tests
         run: |
-          pytest resume-counter/updateVisitorCountPython/
+          pytest updateVisitorCountPython/
 
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy ARM Template
-        run: |
-          az deployment group create \
-            --resource-group cloud-resume-rg \
-            --template-file resume-counter/infra/template.json \
-            --parameters @resume-counter/infra/parameters.json
+      - name: Deploy ARM template
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: cloud-resume-rg
+          template: ./infra/template.json
+          parameters: ./infra/parameters.json
+
+      - name: Deploy Azure Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: resumecounter-func
+          package: ./updateVisitorCountPython
+          
+          #TriggerTest
