@@ -1,0 +1,30 @@
+name: Deploy Static Site to Azure Storage
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.html'
+      - 'style.css'
+      - '404.html'
+      - '.github/workflows/frontend-deploy.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Upload to Azure Storage
+        uses: azure/cli@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az storage blob upload-batch \
+              --account-name greykeystorage \
+              --destination \$web \
+              --source . \
+              --pattern "index.html" "style.css" "404.html" \
+              --account-key ${{ secrets.AZURE_STORAGE_KEY }} 
