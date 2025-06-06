@@ -170,31 +170,13 @@
     },
     {
       "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
-      "type": "Microsoft.Cdn/profiles/customDomains",
-      "apiVersion": "2023-05-01",
-      "name": "[concat(parameters('frontDoorName'), '/', replace(parameters('customDomain'), '.', '-'))]",
-      "location": "global",
-      "dependsOn": [
-        "[resourceId('Microsoft.Cdn/profiles', parameters('frontDoorName'))]"
-      ],
-      "properties": {
-        "hostName": "[parameters('customDomain')]",
-        "tlsSettings": {
-          "certificateType": "ManagedCertificate",
-          "minimumTlsVersion": "TLS12"
-        }
-      }
-    },
-    {
-      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/afdEndpoints/routes",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/default/default-route')]",
       "location": "global",
       "dependsOn": [
         "[resourceId('Microsoft.Cdn/profiles/afdEndpoints', parameters('frontDoorName'), 'default')]",
-        "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]",
-        "[resourceId('Microsoft.Cdn/profiles/customDomains', parameters('frontDoorName'), replace(parameters('customDomain'), '.', '-'))]"
+        "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]"
       ],
       "properties": {
         "enabledState": "Enabled",
@@ -204,12 +186,7 @@
         ],
         "originGroup": {
           "id": "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]"
-        },
-        "customDomains": [
-          {
-            "id": "[resourceId('Microsoft.Cdn/profiles/customDomains', parameters('frontDoorName'), replace(parameters('customDomain'), '.', '-'))]"
-          }
-        ]
+        }
       }
     }
   ]
