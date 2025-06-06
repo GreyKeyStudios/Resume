@@ -48,6 +48,7 @@ jobs:
           resourceGroupName: cloud-resume-rg
           template: ./resume-counter/infra/template.json
           parameters: ./resume-counter/infra/parameters.json
+          deploymentMode: Incremental
 
       - name: Deploy Azure Function App
         uses: Azure/functions-action@v1

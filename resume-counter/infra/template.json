@@ -23,6 +23,7 @@
   },
   "resources": [
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2022-09-01",
       "name": "[parameters('storageAccountName')]",
@@ -40,6 +41,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "2023-04-15",
       "name": "greykeycosmos",
@@ -62,6 +64,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.DocumentDB/databaseAccounts/apis/tables",
       "apiVersion": "2023-04-15",
       "name": "greykeycosmos/Table/VisitorCount",
@@ -71,6 +74,7 @@
       "properties": {}
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Web/sites",
       "apiVersion": "2022-03-01",
       "name": "[parameters('functionAppName')]",
@@ -101,6 +105,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles",
       "apiVersion": "2023-05-01",
       "name": "[parameters('frontDoorName')]",
@@ -110,6 +115,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/afdEndpoints",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/default')]",
@@ -122,6 +128,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/originGroups",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/storage-origin-group')]",
@@ -143,6 +150,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/originGroups/origins",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/storage-origin-group/storage-origin')]",
@@ -161,6 +169,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/customDomains",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/', replace(parameters('customDomain'), '.', '-'))]",
@@ -177,6 +186,7 @@
       }
     },
     {
+      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles/afdEndpoints/routes",
       "apiVersion": "2023-05-01",
       "name": "[concat(parameters('frontDoorName'), '/default/default-route')]",
