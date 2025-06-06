@@ -40,6 +40,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Debug - List Resource Groups
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az account show
+            echo "Listing resource groups..."
+            az group list --query "[].{name:name, location:location}" -o table
+
       - name: Deploy ARM template
         uses: azure/arm-deploy@v1
         with:
