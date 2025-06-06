@@ -1,3 +1,1 @@
-azure-functions==1.18.0
-pytest
-
+azure-functions==1.18.0 

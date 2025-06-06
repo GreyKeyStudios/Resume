@@ -9,7 +9,13 @@
       "value": "centralus"
     },
     "storageAccountName": {
-      "value": "resumecounterfuncsa123"  // must be globally unique and lowercase
+      "value": "resumecounterfuncsa123"
+    },
+    "frontDoorName": {
+      "value": "resume-frontdoor"
+    },
+    "customDomain": {
+      "value": "resume.greykeystudios.com"
     }
   }
 }

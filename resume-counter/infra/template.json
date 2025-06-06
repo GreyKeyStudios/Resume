@@ -10,6 +10,14 @@
     },
     "storageAccountName": {
       "type": "string"
+    },
+    "frontDoorName": {
+      "type": "string",
+      "defaultValue": "resume-frontdoor"
+    },
+    "customDomain": {
+      "type": "string",
+      "defaultValue": "resume.greykeystudios.com"
     }
   },
   "resources": [
@@ -22,7 +30,13 @@
         "name": "Standard_LRS"
       },
       "kind": "StorageV2",
-      "properties": {}
+      "properties": {
+        "staticWebsite": {
+          "enabled": true,
+          "indexDocument": "index.html",
+          "errorDocument404Path": "index.html"
+        }
+      }
     },
     {
       "type": "Microsoft.Web/sites",
@@ -46,6 +60,108 @@
             }
           ]
         }
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles",
+      "apiVersion": "2023-05-01",
+      "name": "[parameters('frontDoorName')]",
+      "location": "global",
+      "sku": {
+        "name": "Standard_AzureFrontDoor"
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/afdEndpoints",
+      "apiVersion": "2023-05-01",
+      "name": "[concat(parameters('frontDoorName'), '/default')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles', parameters('frontDoorName'))]"
+      ],
+      "properties": {
+        "enabledState": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/originGroups",
+      "apiVersion": "2023-05-01",
+      "name": "[concat(parameters('frontDoorName'), '/storage-origin-group')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles', parameters('frontDoorName'))]"
+      ],
+      "properties": {
+        "loadBalancingSettings": {
+          "sampleSize": 4,
+          "successfulSamplesRequired": 2
+        },
+        "healthProbeSettings": {
+          "probePath": "/",
+          "probeRequestType": "GET",
+          "probeProtocol": "Https",
+          "probeIntervalInSeconds": 30
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/originGroups/origins",
+      "apiVersion": "2023-05-01",
+      "name": "[concat(parameters('frontDoorName'), '/storage-origin-group/storage-origin')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]"
+      ],
+      "properties": {
+        "hostName": "[concat(parameters('storageAccountName'), '.z13.web.core.windows.net')]",
+        "httpPort": 80,
+        "httpsPort": 443,
+        "originHostHeader": "[concat(parameters('storageAccountName'), '.z13.web.core.windows.net')]",
+        "priority": 1,
+        "weight": 1000,
+        "enabledState": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/customDomains",
+      "apiVersion": "2023-05-01",
+      "name": "[concat(parameters('frontDoorName'), '/', replace(parameters('customDomain'), '.', '-'))]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles', parameters('frontDoorName'))]"
+      ],
+      "properties": {
+        "hostName": "[parameters('customDomain')]",
+        "tlsSettings": {
+          "certificateType": "ManagedCertificate",
+          "minimumTlsVersion": "TLS12"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Cdn/profiles/afdEndpoints/routes",
+      "apiVersion": "2023-05-01",
+      "name": "[concat(parameters('frontDoorName'), '/default/default-route')]",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Cdn/profiles/afdEndpoints', parameters('frontDoorName'), 'default')]",
+        "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]",
+        "[resourceId('Microsoft.Cdn/profiles/customDomains', parameters('frontDoorName'), replace(parameters('customDomain'), '.', '-'))]"
+      ],
+      "properties": {
+        "enabledState": "Enabled",
+        "forwardingProtocol": "HttpsOnly",
+        "patternsToMatch": [
+          "/*"
+        ],
+        "originGroup": {
+          "id": "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]"
+        },
+        "customDomains": [
+          {
+            "id": "[resourceId('Microsoft.Cdn/profiles/customDomains', parameters('frontDoorName'), replace(parameters('customDomain'), '.', '-'))]"
+          }
+        ]
       }
     }
   ]
