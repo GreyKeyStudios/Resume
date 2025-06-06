@@ -75,37 +75,6 @@
     },
     {
       "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
-      "type": "Microsoft.Web/sites",
-      "apiVersion": "2022-03-01",
-      "name": "[parameters('functionAppName')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
-        "[resourceId('Microsoft.DocumentDB/databaseAccounts', 'greykeycosmos')]"
-      ],
-      "kind": "functionapp,linux",
-      "properties": {
-        "siteConfig": {
-          "linuxFxVersion": "PYTHON|3.12",
-          "appSettings": [
-            {
-              "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01').keys[0].value, ';EndpointSuffix=core.windows.net')]"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "python"
-            },
-            {
-              "name": "COSMOSDB_CONNECTION_STRING",
-              "value": "[listConnectionStrings(resourceId('Microsoft.DocumentDB/databaseAccounts', 'greykeycosmos'), '2023-04-15').connectionStrings[0].connectionString]"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "condition": "[equals(resourceGroup().name, 'cloud-resume-rg')]",
       "type": "Microsoft.Cdn/profiles",
       "apiVersion": "2023-05-01",
       "name": "[parameters('frontDoorName')]",

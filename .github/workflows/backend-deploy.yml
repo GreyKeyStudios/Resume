@@ -1,68 +1,39 @@
-name: Azure Function Python CI/CD
+name: Deploy Backend
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
-      - 'resume-counter/updateVisitorCountPython/**'
-      - 'resume-counter/infra/**'
+      - 'resume-counter/backend/**'
       - '.github/workflows/backend-deploy.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_NAME: resumecounter-func
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'resume-counter/backend'
+  PYTHON_VERSION: '3.12'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: CI/CD trigger reached
-        run: echo "🎯 Reached CI/CD workflow"
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
+    - name: Install dependencies
+      run: |
+        cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r resume-counter/updateVisitorCountPython/requirements.txt
-          pip install pytest
-
-      - name: Run tests
-        run: |
-          pytest resume-counter/updateVisitorCountPython/
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Debug - List Resource Groups
-        uses: azure/cli@v1
-        with:
-          inlineScript: |
-            az account show
-            echo "Listing resource groups..."
-            az group list --query "[].{name:name, location:location}" -o table
-
-      - name: Deploy ARM template
-        uses: azure/arm-deploy@v1
-        with:
-          scope: resourcegroup
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: cloud-resume-rg
-          template: ./resume-counter/infra/template.json
-          parameters: ./resume-counter/infra/parameters.json
-          deploymentMode: Incremental
-
-      - name: Deploy Azure Function App
-        uses: Azure/functions-action@v1
-        with:
-          app-name: resumecounter-func
-          package: ./resume-counter/updateVisitorCountPython
-
-      - name: Echo backend-deploy workflow is running
-        run: echo "✅ CI/CD backend-deploy workflow is running"
+    - name: Deploy to Azure Functions
+      uses: Azure/functions-action@v1
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
