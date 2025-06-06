@@ -45,7 +45,7 @@ jobs:
         with:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: rg1
+          resourceGroupName: cloud-resume-rg
           template: ./resume-counter/infra/template.json
           parameters: ./resume-counter/infra/parameters.json
 

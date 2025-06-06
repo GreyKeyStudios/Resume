@@ -23,7 +23,7 @@ jobs:
           azcliversion: 2.30.0
           inlineScript: |
             az storage blob upload-batch \
-              --account-name greykeystorage \
+              --account-name resumecounterfuncsa123 \
               --destination \$web \
               --source . \
               --account-key ${{ secrets.AZURE_STORAGE_KEY }} 

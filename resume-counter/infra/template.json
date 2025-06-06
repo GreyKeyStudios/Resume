@@ -9,7 +9,8 @@
       "type": "string"
     },
     "storageAccountName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "resumecounterfuncsa123"
     },
     "frontDoorName": {
       "type": "string",
@@ -78,9 +79,10 @@
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
         "[resourceId('Microsoft.DocumentDB/databaseAccounts', 'greykeycosmos')]"
       ],
-      "kind": "functionapp",
+      "kind": "functionapp,linux",
       "properties": {
         "siteConfig": {
+          "linuxFxVersion": "Python|3.12",
           "appSettings": [
             {
               "name": "AzureWebJobsStorage",
