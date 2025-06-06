@@ -1,4 +1,4 @@
-# Trigger CI/CD workflow - safe change
+# Trigger CI/CD workflow - safe change-new
 import os
 # ...rest of your code...
 import azure.functions as func
