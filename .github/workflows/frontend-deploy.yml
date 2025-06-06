@@ -26,5 +26,4 @@ jobs:
               --account-name greykeystorage \
               --destination \$web \
               --source . \
-              --pattern "index.html" "style.css" "404.html" \
               --account-key ${{ secrets.AZURE_STORAGE_KEY }} 
