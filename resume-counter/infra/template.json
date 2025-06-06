@@ -186,7 +186,8 @@
         ],
         "originGroup": {
           "id": "[resourceId('Microsoft.Cdn/profiles/originGroups', parameters('frontDoorName'), 'storage-origin-group')]"
-        }
+        },
+        "linkToDefaultDomain": "Enabled"
       }
     }
   ]
