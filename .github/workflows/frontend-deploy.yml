@@ -34,6 +34,21 @@ jobs:
             --account-name resumecounterfuncsa122 \
             --destination '$web' \
             --source . \
-            --pattern "*.html" "*.css" "*.txt" "*.pdf"
+            --pattern "*.html"
+          az storage blob upload-batch \
+            --account-name resumecounterfuncsa122 \
+            --destination '$web' \
+            --source . \
+            --pattern "*.css"
+          az storage blob upload-batch \
+            --account-name resumecounterfuncsa122 \
+            --destination '$web' \
+            --source . \
+            --pattern "*.txt"
+          az storage blob upload-batch \
+            --account-name resumecounterfuncsa122 \
+            --destination '$web' \
+            --source . \
+            --pattern "*.pdf"
         env:
           AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }} 
