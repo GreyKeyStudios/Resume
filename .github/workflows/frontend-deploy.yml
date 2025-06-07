@@ -1,29 +1,39 @@
-name: Deploy Static Site to Azure Storage
+# Cloud Resume Challenge: Frontend CI/CD Workflow
+# Deploys static website files to Azure Storage on push to main
+
+name: Deploy Frontend
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'index.html'
-      - 'style.css'
       - '404.html'
+      - 'style.css'
+      - 'resume.txt'
+      - 'README.md'
+      - '*.pdf'
       - '.github/workflows/frontend-deploy.yml'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Upload to Azure Storage
-        uses: azure/cli@v1
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az storage blob upload-batch \
-              --account-name resumecounterfuncsa123 \
-              --destination \$web \
-              --source . \
-              --account-key ${{ secrets.AZURE_STORAGE_KEY }} 
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload static files to Azure Storage
+        run: |
+          az storage blob upload-batch \
+            --account-name resumecounterfuncsa122 \
+            --destination '$web' \
+            --source . \
+            --pattern "*.html" "*.css" "*.txt" "*.pdf"
+        env:
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }} 
