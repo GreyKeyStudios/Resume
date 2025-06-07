@@ -1,4 +1,4 @@
-# Trigger CI/CD workflow - safe change-6-6-25-db
+# Test change for workflow deployment - updated by AI
 import os
 # ...rest of your code...
 import azure.functions as func
