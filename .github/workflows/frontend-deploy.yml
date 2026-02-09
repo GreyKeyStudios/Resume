@@ -1,5 +1,5 @@
 # Cloud Resume Challenge: Frontend CI/CD Workflow
-# Deploys static website files to Azure Storage on push to main
+# Builds Next.js static export and deploys to Azure Storage on push to main
 
 name: Deploy Frontend
 
@@ -7,12 +7,19 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'index.html'
-      - '404.html'
-      - 'style.css'
-      - 'resume.txt'
-      - 'README.md'
-      - '*.pdf'
+      - 'app/**'
+      - 'components/**'
+      - 'styles/**'
+      - 'lib/**'
+      - 'hooks/**'
+      - 'public/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'next.config.mjs'
+      - 'tailwind.config.ts'
+      - 'postcss.config.mjs'
+      - 'tsconfig.json'
+      - 'components.json'
       - '.github/workflows/frontend-deploy.yml'
   workflow_dispatch:
 
@@ -22,6 +29,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable pnpm
+        run: corepack enable pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js static export
+        run: pnpm build
 
       - name: Azure Login
         uses: azure/login@v1
@@ -33,22 +54,7 @@ jobs:
           az storage blob upload-batch \
             --account-name resumecounterfuncsa122 \
             --destination '$web' \
-            --source . \
-            --pattern "*.html"
-          az storage blob upload-batch \
-            --account-name resumecounterfuncsa122 \
-            --destination '$web' \
-            --source . \
-            --pattern "*.css"
-          az storage blob upload-batch \
-            --account-name resumecounterfuncsa122 \
-            --destination '$web' \
-            --source . \
-            --pattern "*.txt"
-          az storage blob upload-batch \
-            --account-name resumecounterfuncsa122 \
-            --destination '$web' \
-            --source . \
-            --pattern "*.pdf"
+            --source out \
+            --overwrite true
         env:
-          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }} 
+          AZURE_STORAGE_KEY: ${{ secrets.AZURE_STORAGE_KEY }}

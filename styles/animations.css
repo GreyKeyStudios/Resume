@@ -1,0 +1,728 @@
+/* ==============================
+   UNIFIED ANIMATION SYSTEM
+   Chaos + Calm sequences
+   Animations target sections, paragraphs, and list items (no per-character spans)
+   ============================== */
+
+
+/* ==============================
+   CHAOS MODE
+   ============================== */
+
+/* --- STAGE 1: FRIGHTENED ELEMENTS (0-35s) --- */
+/* Trembling ramps up gradually: starts barely noticeable, ends full panic */
+
+.chaos-mode.chaos-stage-1 .section-title,
+.chaos-mode.chaos-stage-1 .paragraph-block,
+.chaos-mode.chaos-stage-1 .work-section,
+.chaos-mode.chaos-stage-1 .tech-section,
+.chaos-mode.chaos-stage-1 li {
+  animation: frightened-ramp 35s ease-in forwards, frightened-trembling 0.12s infinite alternate;
+  animation-composition: accumulate;
+}
+
+/* Stagger the trembling speed slightly for variety */
+.chaos-mode.chaos-stage-1 .section-title { animation-duration: 35s, 0.08s; }
+.chaos-mode.chaos-stage-1 li:nth-child(odd) { animation-duration: 35s, 0.1s; }
+.chaos-mode.chaos-stage-1 li:nth-child(even) { animation-duration: 35s, 0.14s; }
+.chaos-mode.chaos-stage-1 .paragraph-block:nth-child(odd) { animation-duration: 35s, 0.11s; }
+
+/* Ramp: controls the SCALE of the tremble over 35 seconds */
+@keyframes frightened-ramp {
+  0%   { --tremble-scale: 0.15; }
+  30%  { --tremble-scale: 0.3; }
+  60%  { --tremble-scale: 0.6; }
+  85%  { --tremble-scale: 0.85; }
+  100% { --tremble-scale: 1; }
+}
+
+/* The actual tremble pattern - intensity controlled by CSS transition over time */
+@keyframes frightened-trembling {
+  0%   { transform: translateY(-1.2px) translateX(-0.8px) rotate(-0.5deg); }
+  15%  { transform: translateY(0.5px) translateX(1.1px) rotate(0.3deg); }
+  40%  { transform: translateY(1.3px) translateX(-0.4px) rotate(0.5deg); }
+  65%  { transform: translateY(-0.8px) translateX(0.9px) rotate(-0.2deg); }
+  85%  { transform: translateY(0.6px) translateX(-1.2px) rotate(0.4deg); }
+  100% { transform: translateY(-1.2px) translateX(-0.8px) rotate(-0.5deg); }
+}
+
+/* Progressive intensity: start near-still, end violent */
+.chaos-mode.chaos-stage-1 * {
+  transition: transform 0.15s;
+}
+
+/* First 10 seconds: barely visible */
+.chaos-mode.chaos-stage-1 .section-title,
+.chaos-mode.chaos-stage-1 .paragraph-block,
+.chaos-mode.chaos-stage-1 .work-section,
+.chaos-mode.chaos-stage-1 .tech-section,
+.chaos-mode.chaos-stage-1 li {
+  animation: frightened-subtle 0.25s infinite alternate;
+}
+
+/* Override: ramp up trembling via JS-driven class additions */
+/* JS adds chaos-ramp-2 at 12s, chaos-ramp-3 at 24s for progressive intensity */
+.chaos-mode.chaos-stage-1.chaos-ramp-2 .section-title,
+.chaos-mode.chaos-stage-1.chaos-ramp-2 .paragraph-block,
+.chaos-mode.chaos-stage-1.chaos-ramp-2 .work-section,
+.chaos-mode.chaos-stage-1.chaos-ramp-2 .tech-section,
+.chaos-mode.chaos-stage-1.chaos-ramp-2 li {
+  animation: frightened-medium 0.15s infinite alternate;
+}
+
+.chaos-mode.chaos-stage-1.chaos-ramp-3 .section-title,
+.chaos-mode.chaos-stage-1.chaos-ramp-3 .paragraph-block,
+.chaos-mode.chaos-stage-1.chaos-ramp-3 .work-section,
+.chaos-mode.chaos-stage-1.chaos-ramp-3 .tech-section,
+.chaos-mode.chaos-stage-1.chaos-ramp-3 li {
+  animation: frightened-intense 0.08s infinite alternate;
+}
+
+@keyframes frightened-subtle {
+  0%   { transform: translateY(-0.3px) translateX(-0.2px) rotate(-0.1deg); }
+  50%  { transform: translateY(0.3px) translateX(0.2px) rotate(0.1deg); }
+  100% { transform: translateY(-0.3px) translateX(-0.2px) rotate(-0.1deg); }
+}
+
+@keyframes frightened-medium {
+  0%   { transform: translateY(-0.8px) translateX(-0.5px) rotate(-0.3deg); }
+  25%  { transform: translateY(0.4px) translateX(0.7px) rotate(0.2deg); }
+  50%  { transform: translateY(0.8px) translateX(-0.3px) rotate(0.3deg); }
+  75%  { transform: translateY(-0.5px) translateX(0.6px) rotate(-0.1deg); }
+  100% { transform: translateY(-0.8px) translateX(-0.5px) rotate(-0.3deg); }
+}
+
+@keyframes frightened-intense {
+  0%   { transform: translateY(-1.5px) translateX(-1px) rotate(-0.6deg); }
+  15%  { transform: translateY(0.6px) translateX(1.3px) rotate(0.4deg); }
+  40%  { transform: translateY(1.5px) translateX(-0.5px) rotate(0.6deg); }
+  65%  { transform: translateY(-1px) translateX(1.1px) rotate(-0.3deg); }
+  85%  { transform: translateY(0.8px) translateX(-1.4px) rotate(0.5deg); }
+  100% { transform: translateY(-1.5px) translateX(-1px) rotate(-0.6deg); }
+}
+
+/* Stage 1 background + heat overlay now handled by progressive .chaos-mode rules above */
+
+@keyframes heat-wave {
+  0%   { transform: translateY(0) skewX(0.3deg); opacity: 0.5; }
+  33%  { transform: translateY(-1px) skewX(-0.2deg); opacity: 0.7; }
+  66%  { transform: translateY(-2px) skewX(0.4deg); opacity: 0.6; }
+  100% { transform: translateY(0) skewX(0.3deg); opacity: 0.5; }
+}
+
+/* BUTTON TRANSFORMATION: Contact -> Hire */
+.chaos-mode.chaos-stage-1 .contact-button {
+  position: relative;
+  z-index: 1000;
+}
+
+.chaos-mode.chaos-stage-1 .contact-word {
+  animation: contact-fade-fall 8s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes contact-fade-fall {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+  30%  { opacity: 0.7; transform: translateY(10px) rotate(5deg); }
+  100% { opacity: 0; transform: translateY(100vh) rotate(45deg); visibility: hidden; }
+}
+
+.chaos-mode.chaos-stage-1 .hire-text {
+  display: inline !important;
+  opacity: 0;
+  animation: hire-text-appear 12s forwards;
+  animation-delay: 8s;
+}
+
+@keyframes hire-text-appear {
+  0%   { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+
+/* --- STAGE 2: FALLING WORDS (35s-100s) --- */
+/* Outer: handles falling. Inner: keeps shaking during fall. */
+
+.chaos-mode.chaos-stage-2 .chaos-word-outer {
+  display: inline-block;
+  will-change: transform, opacity;
+  animation: word-slip-fall 2.5s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  animation-delay: var(--fall-delay, 0ms);
+}
+
+.chaos-mode.chaos-stage-2 .chaos-word-inner {
+  display: inline-block;
+  animation: frightened-intense 0.08s infinite alternate;
+}
+
+@keyframes word-slip-fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  4% {
+    /* Slight upward "slip" - losing grip */
+    transform: translateY(-4px) translateX(0) rotate(0.5deg);
+    opacity: 1;
+  }
+  15% {
+    transform: translateY(8vh) translateX(calc(var(--fall-x, 0px) * 0.3)) rotate(calc(var(--fall-rot, 5deg) * 0.3));
+    opacity: 0.85;
+  }
+  40% {
+    transform: translateY(35vh) translateX(calc(var(--fall-x, 0px) * 0.7)) rotate(calc(var(--fall-rot, 5deg) * 0.7));
+    opacity: 0.55;
+  }
+  70% {
+    transform: translateY(75vh) translateX(var(--fall-x, 0px)) rotate(var(--fall-rot, 5deg));
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(150vh) translateX(var(--fall-x, 0px)) rotate(calc(var(--fall-rot, 5deg) * 1.5));
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Safety clear: force-hide everything 1s before glitch */
+.chaos-clear .chaos-word-outer,
+.chaos-clear .section-title,
+.chaos-clear .paragraph-block,
+.chaos-clear .work-section,
+.chaos-clear .tech-section,
+.chaos-clear li,
+.chaos-clear .button-group,
+.chaos-clear .download-buttons,
+.chaos-clear header p,
+.chaos-clear .copyright {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease;
+}
+
+/* --- CHAOS SWAP: Show under-water text in chaos mode --- */
+.chaos-swap-on .swap .above-water {
+  display: none !important;
+}
+.chaos-swap-on .swap .under-water {
+  display: inline !important;
+}
+/* Button swaps need flex for layout */
+.chaos-swap-on button.swap .above-water,
+.chaos-swap-on a.btn.swap .above-water {
+  visibility: hidden !important;
+}
+.chaos-swap-on button.swap .under-water,
+.chaos-swap-on a.btn.swap .under-water {
+  visibility: visible !important;
+  display: flex !important;
+}
+
+/* Progressive heat ramp - background color set via JS inline style on body */
+/* Heat overlay on BODY (not wrapper div) so it covers the full viewport */
+body.chaos-mode::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 60, 0, 0.12) 2px,
+      rgba(255, 60, 0, 0.12) 3px
+    );
+  pointer-events: none;
+  z-index: 9998;
+  animation: heat-wave 1.5s ease-in-out infinite;
+  filter: blur(0.3px);
+  opacity: var(--chaos-heat, 0);
+}
+
+/* Vignette on BODY */
+body.chaos-mode::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+  z-index: 9997;
+  opacity: var(--chaos-heat, 0);
+}
+
+
+/* --- STAGE 3: INTENSE GLITCH (100s-110s) --- */
+
+.chaos-mode.chaos-stage-3 {
+  animation: apocalyptic-glitch 0.06s infinite;
+}
+
+/* RGB color split overlay */
+.chaos-mode.chaos-stage-3::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(90deg, rgba(255, 0, 0, 0.15) 0%, transparent 33%, rgba(0, 0, 255, 0.15) 66%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+  animation: rgb-split 0.1s infinite alternate;
+  mix-blend-mode: screen;
+}
+
+@keyframes rgb-split {
+  0%   { transform: translateX(-3px); opacity: 0.8; }
+  25%  { transform: translateX(4px); opacity: 0.6; }
+  50%  { transform: translateX(-2px); opacity: 1; }
+  75%  { transform: translateX(5px); opacity: 0.7; }
+  100% { transform: translateX(-3px); opacity: 0.8; }
+}
+
+@keyframes apocalyptic-glitch {
+  0%   { transform: translate(0) skew(0deg); filter: hue-rotate(0deg) contrast(1) brightness(1) saturate(1); }
+  7%   { transform: translate(-8px, 5px) skew(4deg); filter: hue-rotate(90deg) contrast(2.8) brightness(1.9) saturate(3); }
+  14%  { transform: translate(6px, -6px) skew(-3deg); filter: hue-rotate(180deg) contrast(0.2) brightness(0.3) saturate(0.1); }
+  21%  { transform: translate(-5px, -4px) skew(5deg); filter: hue-rotate(270deg) contrast(2.2) brightness(1.6) saturate(2.8); }
+  28%  { transform: translate(7px, 6px) skew(-4deg); filter: hue-rotate(45deg) contrast(0.5) brightness(2.5) saturate(4); }
+  35%  { transform: translate(-9px, 3px) skew(3deg); filter: hue-rotate(135deg) contrast(2) brightness(0.6) saturate(0.4); }
+  42%  { transform: translate(4px, -7px) skew(-5deg); filter: hue-rotate(225deg) contrast(0.15) brightness(2.1) saturate(3.8); }
+  50%  { transform: translate(-3px, 5px) skew(4deg); filter: hue-rotate(315deg) contrast(2.5) brightness(0.4) saturate(2.2); }
+  57%  { transform: translate(5px, -3px) skew(-2deg); filter: hue-rotate(60deg) contrast(1.5) brightness(1.8) saturate(1.5); }
+  64%  { transform: translate(-7px, 4px) skew(3deg); filter: hue-rotate(150deg) contrast(0.7) brightness(1.2) saturate(3); }
+  71%  { transform: translate(8px, -2px) skew(-3deg); filter: hue-rotate(210deg) contrast(2.1) brightness(0.7) saturate(0.6); }
+  78%  { transform: translate(-4px, -5px) skew(2deg); filter: hue-rotate(300deg) contrast(0.3) brightness(1.9) saturate(3.5); }
+  85%  { transform: translate(6px, 3px) skew(-1deg); filter: hue-rotate(30deg) contrast(1.8) brightness(1.4) saturate(2); }
+  92%  { transform: translate(-2px, 2px) skew(1deg); filter: hue-rotate(340deg) contrast(1.4) brightness(1.1) saturate(1.6); }
+  100% { transform: translate(0) skew(0deg); filter: hue-rotate(360deg) contrast(1) brightness(1) saturate(1); }
+}
+
+
+/* --- STAGE 4: CRT SHUTDOWN (110s-132s) --- */
+
+.chaos-mode.chaos-stage-4 {
+  animation: crt-television-shutdown 4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  background-color: #000 !important;
+}
+
+/* Horizontal white line that shrinks to center point */
+.chaos-mode.chaos-stage-4::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 2px;
+  background: white;
+  z-index: 1000;
+  animation: crt-line-shrink 4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes crt-television-shutdown {
+  0%   { transform: scale(1) scaleY(1); filter: brightness(1) contrast(1); opacity: 1; }
+  10%  { transform: scale(1.04) scaleY(1.02); filter: brightness(1.5) contrast(1.8); opacity: 1; }
+  20%  { transform: scale(1.03) scaleY(0.9); filter: brightness(1.2) contrast(1.3); opacity: 0.95; }
+  40%  { transform: scale(1.08) scaleY(0.5); filter: brightness(0.8) contrast(0.8); opacity: 0.7; }
+  60%  { transform: scale(1.14) scaleY(0.15); filter: brightness(0.5) contrast(0.5); opacity: 0.4; }
+  80%  { transform: scale(1.2) scaleY(0.03); filter: brightness(0.15) contrast(0.15); opacity: 0.1; }
+  95%  { transform: scale(1.3) scaleY(0.005); filter: brightness(0.02) contrast(0.02); opacity: 0.02; }
+  100% { transform: scale(0) scaleY(0); filter: brightness(0) contrast(0); opacity: 0; }
+}
+
+@keyframes crt-line-shrink {
+  0%   { width: 100vw; opacity: 0; }
+  15%  { width: 100vw; opacity: 1; }
+  50%  { width: 60vw; opacity: 0.9; }
+  80%  { width: 20vw; opacity: 0.7; }
+  95%  { width: 4px; opacity: 0.3; }
+  100% { width: 0; opacity: 0; }
+}
+
+
+/* --- EPILEPSY WARNING --- */
+
+.epilepsy-warning {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 0, 0, 0.95);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  z-index: 10001;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  border: 2px solid #fff;
+  animation: warning-pulse 1s infinite alternate;
+  text-align: center;
+}
+
+@keyframes warning-pulse {
+  0%   { box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+  100% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.9); }
+}
+
+
+/* ==============================
+   CALM MODE
+   ============================== */
+
+/* --- Stage 1: Per-WORD float animation (0-32s) --- */
+/* JS wraps text nodes into .word-float spans during stage 1 */
+.word-float {
+  display: inline-block;
+  animation: word-bob 3s ease-in-out infinite;
+}
+
+@keyframes word-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%  { transform: translateY(-3px) rotate(0.4deg); }
+  50%  { transform: translateY(-1px) rotate(-0.3deg); }
+  75%  { transform: translateY(-2.5px) rotate(0.2deg); }
+}
+
+/* Disable ALL interactive elements during both calm and chaos scenes */
+.calm-mode button,
+.calm-mode a,
+.calm-mode .btn,
+.calm-mode input,
+.calm-mode select,
+.calm-mode [role="button"],
+.chaos-mode button,
+.chaos-mode a,
+.chaos-mode .btn,
+.chaos-mode input,
+.chaos-mode select,
+.chaos-mode [role="button"] {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+/* Buttons and header still sway as whole units in stage 1 */
+.calm-mode.calm-stage-1 .button-group { animation: gentle-sway-a 3.5s ease-in-out infinite; animation-delay: -0.3s; }
+.calm-mode.calm-stage-1 .download-buttons { animation: gentle-sway-b 3.5s ease-in-out infinite; animation-delay: -1.8s; }
+.calm-mode.calm-stage-1 header { animation: gentle-sway-a 5s ease-in-out infinite; }
+
+/* Two slightly different curves for variety */
+@keyframes gentle-sway-a {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%  { transform: translateY(-2.5px) rotate(0.25deg); }
+  66%  { transform: translateY(-1px) rotate(-0.15deg); }
+}
+
+@keyframes gentle-sway-b {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%  { transform: translateY(-1.5px) rotate(-0.2deg); }
+  66%  { transform: translateY(-2px) rotate(0.18deg); }
+}
+
+/* Stage 2: also float name/header */
+.calm-mode.calm-stage-2 header { animation: paragraph-float 6s ease-in-out infinite; }
+
+
+/* --- Stage 2: Paragraph/section float (32s-145s) --- */
+.calm-mode.calm-stage-2 .paragraph-block,
+.calm-mode.calm-stage-2 section {
+  animation: paragraph-float 5s ease-in-out infinite;
+}
+
+.calm-mode.calm-stage-2 section:nth-child(even) {
+  animation-delay: -1.5s;
+}
+
+.calm-mode.calm-stage-2 section:nth-child(odd) {
+  animation-delay: -3s;
+}
+
+@keyframes paragraph-float {
+  0%   { transform: translateY(0) translateX(0); }
+  25%  { transform: translateY(-4px) translateX(2px); }
+  50%  { transform: translateY(2px) translateX(-1px); }
+  75%  { transform: translateY(-2px) translateX(1px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+
+/* --- Stage 3: Ocean storm (145s+) --- */
+/* Let dark mode handle background via next-themes */
+.calm-mode.calm-stage-3 {
+  transition: color 3s ease;
+}
+
+/* Content drifts like a ship in storm */
+.calm-mode.calm-stage-3 .container {
+  animation: ship-in-storm 4s ease-in-out infinite;
+}
+
+/* --- Water-reactive effects (applied dynamically via JS) --- */
+/* Elements touching the waterline bob and shimmer */
+.water-touching .letter-outer {
+  animation: buoyant-bob 2.4s ease-in-out infinite !important;
+}
+
+.water-touching .letter-inner {
+  filter: blur(0.25px) saturate(1.2);
+  text-shadow: 0 0 10px rgba(120, 200, 255, 0.35);
+  opacity: 0.95;
+  transition: filter 1s, text-shadow 1s, opacity 1s;
+}
+
+@keyframes buoyant-bob {
+  0%   { transform: translateY(0px) rotate(-0.3deg); }
+  50%  { transform: translateY(-2px) rotate(0.3deg); }
+  100% { transform: translateY(0px) rotate(-0.3deg); }
+}
+
+/* Fully submerged elements */
+.water-submerged {
+  transition: all 1.5s ease;
+}
+
+/* --- Generic text swap: .swap > .above-water / .under-water --- */
+.swap .under-water { display: none; }
+.swap .above-water { display: inline; }
+
+.water-submerged .swap .above-water,
+.swap.water-submerged .above-water { display: none; }
+
+/* Keep buttons same size during swap -- shrink text to fit */
+button.swap, a.btn.swap {
+  position: relative;
+  overflow: hidden;
+}
+button.swap .above-water, a.btn.swap .above-water { visibility: visible; }
+button.swap .under-water, a.btn.swap .under-water {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-size: 0.8em;
+  padding: 0 8px;
+  visibility: hidden;
+}
+
+.water-submerged button.swap .above-water, .water-submerged a.btn.swap .above-water,
+button.swap.water-submerged .above-water, a.btn.swap.water-submerged .above-water { visibility: hidden; display: inline !important; }
+.water-submerged button.swap .under-water, .water-submerged a.btn.swap .under-water,
+button.swap.water-submerged .under-water, a.btn.swap.water-submerged .under-water { visibility: visible; display: flex !important; }
+
+/* ===== LIGHT MODE (daytime) underwater styles ===== */
+/* Magic words: dark navy blue, bold -- readable on light blue water */
+.water-submerged .swap .under-water,
+.swap.water-submerged .under-water {
+  display: inline;
+  color: #1e1b4b;
+  text-shadow:
+    0 0 6px rgba(30, 27, 75, 0.4),
+    0 0 12px rgba(59, 130, 246, 0.3);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Headers: dark navy */
+.water-submerged h2,
+.water-submerged .section-title,
+.water-submerged h2 .word-float,
+.water-submerged .section-title .word-float {
+  color: #1e3a5f;
+  text-shadow: 0 0 8px rgba(30, 58, 95, 0.3);
+}
+
+/* Name: dark navy with glow */
+.water-touching h1.section-title {
+  text-shadow: 0 2px 8px rgba(30, 58, 95, 0.3);
+  transition: text-shadow 1.5s;
+}
+
+.water-submerged h1.section-title {
+  color: #1e3a5f;
+  text-shadow: 0 0 10px rgba(30, 58, 95, 0.4);
+  transition: color 1.5s, text-shadow 1.5s;
+}
+
+/* Body text: darker for contrast on light water */
+.water-submerged p,
+.water-submerged li,
+.water-submerged span:not(.under-water):not(.above-water) {
+  color: #1e293b;
+}
+
+.water-submerged a {
+  color: #1e40af !important;
+  text-shadow: none;
+}
+
+/* Buttons: dark navy with white text, non-interactive underwater */
+.water-submerged button,
+.water-submerged .btn,
+.water-submerged .contact-button {
+  background: rgba(15, 30, 60, 0.85) !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Also disable links underwater */
+.water-submerged a {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Force button swap text to white */
+.water-submerged button .under-water,
+.water-submerged .btn .under-water,
+button.water-submerged .under-water {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== DARK MODE underwater - uses .dark-mode on body ===== */
+/* Nuclear: catch every possible element */
+.dark-mode .water-submerged,
+.dark-mode .water-submerged *,
+.dark-mode .swap.water-submerged,
+.dark-mode .swap.water-submerged * {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Headers: brighter white, subtle glow */
+.dark-mode .water-submerged h1,
+.dark-mode .water-submerged h2,
+.dark-mode .water-submerged h3,
+.dark-mode .water-submerged .section-title {
+  color: #ffffff !important;
+  text-shadow:
+    0 0 3px rgba(0, 255, 255, 0.5),
+    0 0 8px rgba(0, 200, 255, 0.25) !important;
+}
+
+/* Magic swap words: subtle neon glow */
+.dark-mode .water-submerged .swap .under-water,
+.dark-mode .swap.water-submerged .under-water {
+  color: #ffffff !important;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 6px rgba(0, 255, 255, 0.7),
+    0 0 12px rgba(0, 200, 255, 0.4) !important;
+  filter: none;
+}
+
+/* Links: cyan */
+.dark-mode .water-submerged a {
+  color: #7dd3fc !important;
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.5) !important;
+}
+
+/* Buttons: BLAZING neon in dark/storm */
+.dark-mode .water-submerged button,
+.dark-mode .water-submerged .btn,
+.dark-mode .water-submerged .contact-button,
+.dark-mode button.water-submerged,
+.dark-mode .btn.water-submerged {
+  background: rgba(0, 240, 255, 0.5) !important;
+  border: 2px solid #00ffff !important;
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 1),
+    0 0 20px rgba(0, 255, 255, 0.8),
+    0 0 40px rgba(0, 200, 255, 0.6),
+    0 0 60px rgba(100, 150, 255, 0.4),
+    inset 0 0 15px rgba(0, 255, 255, 0.3);
+  color: #ffffff !important;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px rgba(0, 255, 255, 1),
+    0 0 20px rgba(0, 200, 255, 0.8);
+  filter: brightness(1.3);
+}
+
+@keyframes ship-in-storm {
+  0%   { transform: translateX(0) rotate(0deg); }
+  25%  { transform: translateX(-12px) rotate(-0.6deg); }
+  50%  { transform: translateX(8px) rotate(0.4deg); }
+  75%  { transform: translateX(-6px) rotate(-0.2deg); }
+  100% { transform: translateX(0) rotate(0deg); }
+}
+
+
+/* ==============================
+   CRT OVERLAY STYLES
+   ============================== */
+
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 900;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.crt-overlay.active {
+  opacity: 1;
+}
+
+.crt-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.15) 1px,
+    rgba(0, 0, 0, 0.15) 2px
+  );
+  animation: scanline-flicker 0.05s infinite;
+}
+
+@keyframes scanline-flicker {
+  0%   { opacity: 0.8; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+.crt-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  box-shadow: 0 0 8px white, 0 0 16px white;
+}
+
+.crt-overlay.active .crt-dot {
+  animation: crt-dot-appear 4s forwards;
+  animation-delay: 3s;
+}
+
+@keyframes crt-dot-appear {
+  0%   { opacity: 0; width: 4px; height: 4px; }
+  50%  { opacity: 1; width: 6px; height: 6px; }
+  100% { opacity: 0; width: 2px; height: 2px; }
+}
