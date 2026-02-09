@@ -860,7 +860,7 @@ export default function CloudResume() {
 
       {/* Main content */}
       <Card className="container">
-        <CardContent className="p-10">
+        <CardContent className="p-6 md:p-10">
           <header>
             <h1 className="section-title text-4xl font-bold text-blue-600 mb-4 text-center" data-water-reactive>Michael Walton</h1>
 
