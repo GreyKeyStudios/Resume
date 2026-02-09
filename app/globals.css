@@ -761,14 +761,14 @@ a:hover {
   }
 }
 
-/* Wooden Warning Sign - positioned ON TOP of planks with proper coverage */
+/* Wooden Warning Sign - centered over the button (button at 20px, 200px wide → sign 140px centered = left 50px) */
 .wooden-warning-sign {
   position: absolute;
-  top: 5px; /* Changed from 10px to 5px */
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
+  top: 5px;
+  left: 50px; /* 20px button left + (200px button - 140px sign) / 2 */
+  transform: rotate(-2deg);
   width: 140px;
-  height: 90px; /* Increased from 70px to 90px */
+  height: 90px;
   background: linear-gradient(145deg, #8b4513 0%, #a0522d 50%, #654321 100%);
   border: 3px solid #5d2f0a;
   border-radius: 6px;
@@ -780,12 +780,12 @@ a:hover {
 }
 
 .wooden-warning-sign:hover {
-  transform: translateX(-50%) rotate(0deg) scale(1.02);
+  transform: rotate(0deg) scale(1.02);
 }
 
 .wooden-warning-sign.removed {
   opacity: 0;
-  transform: translateX(-50%) translateY(-80px) rotate(-20deg) scale(0.5);
+  transform: translateY(-80px) rotate(-20deg) scale(0.5);
   pointer-events: none;
 }
 
@@ -1466,6 +1466,21 @@ a:hover {
   .danger-btn {
     width: 160px;
     font-size: 1.2rem;
+    line-height: 1.2;
+  }
+
+  .wooden-planks {
+    top: 20px;
+    left: 20px;
+    width: 160px;
+    height: 60px;
+  }
+
+  /* Sign centered over 160px button: 20 + (160 - 120) / 2 = 40px */
+  .wooden-warning-sign {
+    left: 40px;
+    width: 120px;
+    height: 76px;
   }
 
   .futuristic-portfolio-btn {
