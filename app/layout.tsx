@@ -3,9 +3,12 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Michael Walton | Cloud Resume',
+  description: 'Michael Walton – IT professional, Cloud Resume Challenge (Azure). Security+, CCST Cybersecurity, 10+ years experience.',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/apple-icon.png',
+  },
 }
 
 export default function RootLayout({
