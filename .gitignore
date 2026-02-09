@@ -99,6 +99,9 @@ __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 
+# Windows Zone.Identifier (download metadata)
+*Zone.Identifier
+
 # Oldgittracking
 resume-counter/.git
 resume-counter/.gitignore
