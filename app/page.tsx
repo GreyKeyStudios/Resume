@@ -82,7 +82,8 @@ export default function CloudResume() {
     // Randomize fall order with easing curve (slow start, rapid finish)
     // tStage2=35s, tGlitch=100s, fallDuration=2.5s, buffer=1.5s
     // maxDelay = 65 - 1.5 - 2.5 = 61s
-    const maxDelay = 61000
+    const maxDelay = 50000
+    const swapDelayOffset = 30000
     const n = allWords.length
     if (n === 0) return
 
@@ -97,10 +98,11 @@ export default function CloudResume() {
     indices.forEach((shuffledIdx, arrayPos) => {
       const t = arrayPos / (n - 1 || 1) // 0 to 1
       const eased = t * t // quadratic: most fall later
-      const delay = eased * maxDelay
+      let delay = eased * maxDelay
+      const el = allWords[shuffledIdx]
+      if (el.closest(".swap")) delay += swapDelayOffset
       const rot = (Math.random() - 0.5) * 30 // random rotation -15 to +15
       const xDrift = (Math.random() - 0.5) * 80 // random x drift -40 to +40
-      const el = allWords[shuffledIdx]
       el.style.setProperty("--fall-delay", `${delay.toFixed(0)}ms`)
       el.style.setProperty("--fall-rot", `${rot.toFixed(1)}deg`)
       el.style.setProperty("--fall-x", `${xDrift.toFixed(0)}px`)
@@ -286,6 +288,7 @@ export default function CloudResume() {
         "chaos-ramp-3",
         "chaos-swap-on",
         "chaos-clear",
+        // Do NOT remove chaos-swap-step-* here: keep chaos text until reset/exit
       )
     }
   }, [animationState])
@@ -527,11 +530,11 @@ export default function CloudResume() {
     // Start progressive heat ramp (drives --chaos-heat 0->1 over 100s)
     startHeatRamp()
 
-    // Re-enable scrolling after initial lock (20s)
+    // Re-enable scrolling after last chaos swap step (17s)
     timeoutsRef.current.push(
       setTimeout(() => {
         document.body.style.overflow = "auto"
-      }, 20000),
+      }, 17000),
     )
 
     // STAGE 1 RAMP: Gradually increase trembling intensity
@@ -549,20 +552,21 @@ export default function CloudResume() {
       }, 24000),
     )
 
-    // CHAOS SWAP: Trigger "Hire Me" and all swaps at 30s (before falling starts)
-    timeoutsRef.current.push(
-      setTimeout(() => {
-        document.body.classList.add("chaos-swap-on")
-      }, 30000),
-    )
+    // STAGGERED CHAOS SWAP: brief pause then one-by-one ~2.5s apart (1.5s, 4s, 6.5s, 9s, 11.5s, 14s); scroll at 17s
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-1") }, 1500))
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-2") }, 4000))
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-3") }, 6500))
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-4") }, 9000))
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-5") }, 11500))
+    timeoutsRef.current.push(setTimeout(() => { document.body.classList.add("chaos-swap-step-6") }, 14000))
 
-    // STAGE 2: Falling words (35s-100s)
+    // STAGE 2: Falling words (44s-100s)
     timeoutsRef.current.push(
       setTimeout(() => {
         document.body.classList.remove("chaos-ramp-2", "chaos-ramp-3")
         wrapWordsForChaos() // Split text into per-word spans with randomized delays
         setAnimationState((prev) => ({ ...prev, stage: "falling-letters" }))
-      }, 35000),
+      }, 44000),
     )
 
     // Show epilepsy warning 5s before glitch (95s)
@@ -682,7 +686,16 @@ export default function CloudResume() {
 
     // Restore the user's previous theme preference (not force light)
     document.body.style.backgroundColor = ""
-    document.body.classList.remove("dark-mode")
+    document.body.classList.remove(
+      "dark-mode",
+      "chaos-swap-on",
+      "chaos-swap-step-1",
+      "chaos-swap-step-2",
+      "chaos-swap-step-3",
+      "chaos-swap-step-4",
+      "chaos-swap-step-5",
+      "chaos-swap-step-6",
+    )
     const wasInDark = previousThemeRef.current === "dark"
     setIsDarkMode(wasInDark)
     if (wasInDark) {
@@ -870,19 +883,19 @@ export default function CloudResume() {
 
             <div className="button-group">
               <div data-water-reactive>
-                <Button onClick={scrollToContact} className="contact-button swap">
+                <Button onClick={scrollToContact} className="contact-button swap" data-chaos-order="1">
                   <span className="above-water">Contact Me</span>
                   <span className="under-water">Hire Me</span>
                   <span className="chaos-water">Hire Me</span>
                 </Button>
               </div>
               <div className="download-buttons" data-water-reactive>
-                <a href="/Michael Walton Tech Resume - 2026.pdf" download className="btn swap">
+                <a href="/Michael Walton Tech Resume - 2026.pdf" download className="btn swap" data-chaos-order="2">
                   <span className="above-water">Download PDF</span>
                   <span className="under-water">Print Me. Frame Me.</span>
                   <span className="chaos-water">The Artifact</span>
                 </a>
-                <a href="/Michael Walton Tech Resume - 2026.docx" download className="btn swap">
+                <a href="/Michael Walton Tech Resume - 2026.docx" download className="btn swap" data-chaos-order="3">
                   <span className="above-water">Download DOCX</span>
                   <span className="under-water">Recruiter Mode</span>
                   <span className="chaos-water">Editable Evidence</span>
@@ -894,8 +907,8 @@ export default function CloudResume() {
               Contact information available in downloadable resume
             </p>
             <p className="paragraph-block whitespace-normal break-words mb-2" data-water-reactive>
-              [<a href="https://www.linkedin.com/in/michael-walton84" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">LinkedIn</span><span className="under-water">Corporate Version Of Me</span><span className="chaos-water">The Suit Version</span></a>]{' | ['}
-              <a href="https://github.com/GreyKeyStudios" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">C0de Receipts</span><span className="chaos-water">Secret Vault</span></a>{']'}
+              [<a href="https://www.linkedin.com/in/michael-walton84" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer" data-chaos-order="4"><span className="above-water">LinkedIn</span><span className="under-water">Corporate Version Of Me</span><span className="chaos-water">The Suit Version</span></a>]{' | ['}
+              <a href="https://github.com/GreyKeyStudios" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer" data-chaos-order="5"><span className="above-water">GitHub</span><span className="under-water">C0de Receipts</span><span className="chaos-water">Secret Vault</span></a>{']'}
             </p>
             <p className="paragraph-block whitespace-normal break-words" id="visitor-counter">
               {`You are visitor #${visits}`}
@@ -903,14 +916,14 @@ export default function CloudResume() {
           </header>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Information Technology Professional | Security+ Certified'}</span><span className="under-water">Very Hirable IT Human</span><span className="chaos-water">Very Hirable IT Human</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">{'Information Technology Professional | Security+ Certified'}</span><span className="under-water">Very Hirable IT Human</span><span className="chaos-water">Professional Problem Fixer. Mostly Harmless.</span></h2>
             <p className="paragraph-block whitespace-normal break-words">
               {'Security+ certified IT professional with 10 years of experience supporting enterprise users and troubleshooting hardware/software/network issues. Built hands-on Cybersecurity portfolio projects including Splunk SIEM dashboards, incident case-files, and Python-based threat intelligence automation using VirusTotal, AbuseIPDB, and AlienVault OTX. Strong customer service skills, documentation, ticket-driven workflows, and clear communication of technical findings to both users and technical teams.'}
             </p>
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Certifications / Technical Proficiency'}</span><span className="under-water">Yes, I Actually Studied</span><span className="chaos-water">Paper Armor</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">{'Certifications / Technical Proficiency'}</span><span className="under-water">Yes, I Actually Studied</span><span className="chaos-water">Paper Armor</span></h2>
             <div className="paragraph-block whitespace-normal break-words grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-2">CERTIFICATIONS</h3>
@@ -939,7 +952,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Work Experience</span><span className="under-water">Proof I've Survived IT</span><span className="chaos-water">Battle Scars</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">Work Experience</span><span className="under-water">Proof I've Survived IT</span><span className="chaos-water">Battle Scars</span></h2>
 
             <div className="paragraph-block whitespace-normal break-words mb-6">
               <div className="work-section">
@@ -1010,7 +1023,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Education</span><span className="under-water">The Knowledge Vault</span><span className="chaos-water">The Lore</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">Education</span><span className="under-water">The Knowledge Vault</span><span className="chaos-water">The Lore</span></h2>
 
             <div className="paragraph-block whitespace-normal break-words mb-4">
               <h3 className="text-lg font-semibold">CompTIA Security+ Certification</h3>
@@ -1047,7 +1060,7 @@ export default function CloudResume() {
           </div>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Projects and Labs</span><span className="under-water">Receipts (Scroll Below)</span><span className="chaos-water">The Laboratory</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">Projects and Labs</span><span className="under-water">Receipts (Scroll Below)</span><span className="chaos-water">The Laboratory</span></h2>
             <ul className="paragraph-block whitespace-normal break-words list-disc pl-6 space-y-3">
               <li><strong>Home Security Lab</strong>{' \u2013 Deployed a Splunk SIEM to monitor and analyze network traffic for threats.'}</li>
               <li><strong>TryHackMe Blue Team Labs</strong>{' \u2013 Completed hands-on labs in log analysis, threat detection, and incident response.'}</li>
@@ -1064,7 +1077,7 @@ export default function CloudResume() {
                 <span style={{ whiteSpace: "nowrap" }}>[<a href="https://soc.greykeystudios.dev" target="_blank" className="text-blue-600 hover:underline" rel="noreferrer">https://soc.greykeystudios.dev</a>]</span>
                 {' '}
                 <strong>GitHub:</strong>{' '}
-                <span style={{ whiteSpace: "nowrap" }}>[<a href="https://github.com/CyberSecurity-Projects.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">CyberSecurity-Projects</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</span>
+                <span style={{ whiteSpace: "nowrap" }}>[<a href="https://github.com/CyberSecurity-Projects.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer" data-chaos-order="6"><span className="above-water">CyberSecurity-Projects</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</span>
               </li>
               <li>
                 <strong>Cloud Resume Challenge:</strong>{' Hey, you made it! '}
@@ -1078,7 +1091,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Web Development & Digital Presence'}</span><span className="under-water">Internet Wizardry Section</span><span className="chaos-water">Internet Wizardry Section</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">{'Web Development & Digital Presence'}</span><span className="under-water">Internet Wizardry Section</span><span className="chaos-water">Internet Wizardry Section</span></h2>
             <div className="paragraph-block whitespace-normal break-words space-y-3">
               <p>{'Designed, built, and deployed multiple real-world websites using modern web stacks, focusing on performance, branding, accessibility, and secure deployment. Experienced with Cloudflare Pages hosting, Cloudflare DNS/subdomain management, Cloudflare R2 media storage, automated content workflows, API integrations, and e-commerce tools.'}</p>
               <h3 className="font-semibold mt-4">{'Websites Built / In Progress'}</h3>
@@ -1095,19 +1108,19 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Founder & Creative Director, Grey Key Studios'}</span><span className="under-water">I Make Music Too</span><span className="chaos-water">I Make Music Too</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">{'Founder & Creative Director, Grey Key Studios'}</span><span className="under-water">I Make Music Too</span><span className="chaos-water">I Make Music Too</span></h2>
             <p className="paragraph-block whitespace-normal break-words">
               Established and manage Grey Key Studios, an independent music label and creative platform. Oversee all aspects of music production, branding, and digital presence, including website development, artist identity creation, and release strategy.
             </p>
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Advanced Music Education & Production Suite'}</span><span className="under-water">What Did I Get Myself Into?</span><span className="chaos-water">Nerdy Music Wizardry</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap" data-chaos-order="6"><span className="above-water">{'Advanced Music Education & Production Suite'}</span><span className="under-water">What Did I Get Myself Into?</span><span className="chaos-water">Nerdy Music Wizardry</span></h2>
             <p className="paragraph-block whitespace-normal break-words mb-3"><em>(in development)</em></p>
             <div className="paragraph-block whitespace-normal break-words space-y-3">
               <p>A digital audio workstation (DAW) and interactive music education platform integrating real-time audio processing, visualization, and adaptive learning. Developed using AI-assisted coding (Claude, ChatGPT, Cursor, v0) for architecture and implementation.</p>
               <p><strong>Technologies:</strong> TypeScript, React.js, Web Audio API, JUCE, WebAssembly, Node.js</p>
-              <p>{'Project available on '}[<a href="https://github.com/GreyKeyStudios/DreamVST.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</p>
+              <p>{'Project available on '}[<a href="https://github.com/GreyKeyStudios/DreamVST.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer" data-chaos-order="6"><span className="above-water">GitHub</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</p>
               <p>Various other projects in the works. Portfolio will be available shortly.</p>
             </div>
           </section>

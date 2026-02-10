@@ -15,7 +15,7 @@ export default function LinkedInButton() {
       className="linkedin-button bg-[#0077B5] hover:bg-[#005885] text-white px-6 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-lg"
     >
       <Linkedin size={20} />
-      <span className="swap">
+      <span className="swap" data-chaos-order="6">
         <span className="above-water"><LetterWrapper animated={false} text="LinkedIn" /></span>
         <span className="under-water">Yes I'm Real</span>
         <span className="chaos-water">Me Again!</span>

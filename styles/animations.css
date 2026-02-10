@@ -146,7 +146,7 @@
 .chaos-mode.chaos-stage-2 .chaos-word-outer {
   display: inline-block;
   will-change: transform, opacity;
-  animation: word-slip-fall 2.5s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  animation: word-slip-fall 4s cubic-bezier(0.55, 0, 1, 0.45) forwards;
   animation-delay: var(--fall-delay, 0ms);
 }
 
@@ -200,35 +200,95 @@
   transition: opacity 0.3s ease;
 }
 
-/* --- Chaos-water hidden until chaos-swap-on (calm uses water-submerged for .under-water) --- */
+/* --- Chaos-water hidden until chaos step (calm uses water-submerged for .under-water) --- */
 .swap .chaos-water {
   display: none !important;
 }
 
-/* --- CHAOS SWAP: Show chaos-water text in chaos mode (not under-water) --- */
-.chaos-swap-on .swap .above-water {
-  display: none !important;
-}
-.chaos-swap-on .swap .under-water {
-  display: none !important;
-}
-.chaos-swap-on .swap .chaos-water {
-  display: inline !important;
-}
-/* Button swaps need flex for layout */
-.chaos-swap-on button.swap .above-water,
-.chaos-swap-on a.btn.swap .above-water {
-  visibility: hidden !important;
-}
-.chaos-swap-on button.swap .under-water,
-.chaos-swap-on a.btn.swap .under-water {
-  visibility: hidden !important;
-}
-.chaos-swap-on button.swap .chaos-water,
-.chaos-swap-on a.btn.swap .chaos-water {
-  visibility: visible !important;
-  display: flex !important;
-}
+/* --- STAGGERED CHAOS SWAP: step-based (order 1=Contact, 2=PDF, 3=DOCX, 4=LinkedIn, 5=GitHub, 6=rest) --- */
+body.chaos-swap-step-1 .swap[data-chaos-order="1"] .above-water { display: none !important; }
+body.chaos-swap-step-1 .swap[data-chaos-order="1"] .under-water { display: none !important; }
+body.chaos-swap-step-1 .swap[data-chaos-order="1"] .chaos-water { display: inline !important; }
+body.chaos-swap-step-2 .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-2 .swap[data-chaos-order="2"] .above-water { display: none !important; }
+body.chaos-swap-step-2 .swap[data-chaos-order="1"] .under-water,
+body.chaos-swap-step-2 .swap[data-chaos-order="2"] .under-water { display: none !important; }
+body.chaos-swap-step-2 .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-2 .swap[data-chaos-order="2"] .chaos-water { display: inline !important; }
+body.chaos-swap-step-3 .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="2"] .above-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="3"] .above-water { display: none !important; }
+body.chaos-swap-step-3 .swap[data-chaos-order="1"] .under-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="2"] .under-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="3"] .under-water { display: none !important; }
+body.chaos-swap-step-3 .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="2"] .chaos-water,
+body.chaos-swap-step-3 .swap[data-chaos-order="3"] .chaos-water { display: inline !important; }
+body.chaos-swap-step-4 .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="2"] .above-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="3"] .above-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="4"] .above-water { display: none !important; }
+body.chaos-swap-step-4 .swap[data-chaos-order="1"] .under-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="2"] .under-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="3"] .under-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="4"] .under-water { display: none !important; }
+body.chaos-swap-step-4 .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="2"] .chaos-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="3"] .chaos-water,
+body.chaos-swap-step-4 .swap[data-chaos-order="4"] .chaos-water { display: inline !important; }
+body.chaos-swap-step-5 .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="2"] .above-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="3"] .above-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="4"] .above-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="5"] .above-water { display: none !important; }
+body.chaos-swap-step-5 .swap[data-chaos-order="1"] .under-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="2"] .under-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="3"] .under-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="4"] .under-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="5"] .under-water { display: none !important; }
+body.chaos-swap-step-5 .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="2"] .chaos-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="3"] .chaos-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="4"] .chaos-water,
+body.chaos-swap-step-5 .swap[data-chaos-order="5"] .chaos-water { display: inline !important; }
+body.chaos-swap-step-6 .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="2"] .above-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="3"] .above-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="4"] .above-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="5"] .above-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="6"] .above-water { display: none !important; }
+body.chaos-swap-step-6 .swap[data-chaos-order="1"] .under-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="2"] .under-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="3"] .under-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="4"] .under-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="5"] .under-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="6"] .under-water { display: none !important; }
+body.chaos-swap-step-6 .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="2"] .chaos-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="3"] .chaos-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="4"] .chaos-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="5"] .chaos-water,
+body.chaos-swap-step-6 .swap[data-chaos-order="6"] .chaos-water { display: inline !important; }
+/* Button/link layout: visibility so chaos-water shows in place of above-water */
+body.chaos-swap-step-1 button.swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-1 button .swap[data-chaos-order="1"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-1 button.swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-1 button .swap[data-chaos-order="1"] .chaos-water { visibility: visible !important; display: flex !important; }
+body.chaos-swap-step-2 button.swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-2 button .swap[data-chaos-order="1"] .above-water,
+body.chaos-swap-step-2 a.btn.swap[data-chaos-order="2"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-2 button.swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-2 button .swap[data-chaos-order="1"] .chaos-water,
+body.chaos-swap-step-2 a.btn.swap[data-chaos-order="2"] .chaos-water { visibility: visible !important; display: flex !important; }
+body.chaos-swap-step-3 a.btn.swap[data-chaos-order="3"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-3 a.btn.swap[data-chaos-order="3"] .chaos-water { visibility: visible !important; display: flex !important; }
+body.chaos-swap-step-4 a.swap[data-chaos-order="4"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-4 a.swap[data-chaos-order="4"] .chaos-water { visibility: visible !important; display: flex !important; }
+body.chaos-swap-step-5 a.swap[data-chaos-order="5"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-5 a.swap[data-chaos-order="5"] .chaos-water { visibility: visible !important; display: flex !important; }
+body.chaos-swap-step-6 .swap[data-chaos-order="6"] .above-water { visibility: hidden !important; }
+body.chaos-swap-step-6 .swap[data-chaos-order="6"] .chaos-water,
+body.chaos-swap-step-6 button .swap[data-chaos-order="6"] .chaos-water { visibility: visible !important; display: flex !important; }
 
 /* Progressive heat ramp - background color set via JS inline style on body */
 /* Heat overlay on BODY (not wrapper div) so it covers the full viewport */
