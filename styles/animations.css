@@ -200,30 +200,9 @@
   transition: opacity 0.3s ease;
 }
 
-/* --- Default: alternate text hidden until calm or chaos swap is on --- */
-.swap .under-water,
+/* --- Chaos-water hidden until chaos-swap-on (calm uses water-submerged for .under-water) --- */
 .swap .chaos-water {
   display: none !important;
-}
-
-/* --- CALM SWAP: Show under-water (calm) text in calm mode --- */
-.calm-mode.calm-swap-on .swap .above-water {
-  display: none !important;
-}
-.calm-mode.calm-swap-on .swap .under-water {
-  display: inline !important;
-}
-.calm-mode.calm-swap-on .swap .chaos-water {
-  display: none !important;
-}
-.calm-mode.calm-swap-on button.swap .above-water,
-.calm-mode.calm-swap-on a.btn.swap .above-water {
-  visibility: hidden !important;
-}
-.calm-mode.calm-swap-on button.swap .under-water,
-.calm-mode.calm-swap-on a.btn.swap .under-water {
-  visibility: visible !important;
-  display: flex !important;
 }
 
 /* --- CHAOS SWAP: Show chaos-water text in chaos mode (not under-water) --- */

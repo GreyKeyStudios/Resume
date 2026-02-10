@@ -286,7 +286,6 @@ export default function CloudResume() {
         "chaos-ramp-3",
         "chaos-swap-on",
         "chaos-clear",
-        "calm-swap-on",
       )
     }
   }, [animationState])
@@ -446,13 +445,12 @@ export default function CloudResume() {
 
   const startCalmExperience = () => {
     console.log("[v0] Starting calm experience...")
-    document.body.classList.add("calm-swap-on")
     // Store user's current theme so we can restore it on reset
     previousThemeRef.current = isDarkMode ? "dark" : "light"
 
     playAudio(calmAudioRef)
     calmStageRef.current = 1
-    setOceanFillLevel(20)
+    setOceanFillLevel(28)
 
     // Stage 1: wrap visible text into word-spans for per-word animation
     requestAnimationFrame(() => {
@@ -509,7 +507,11 @@ export default function CloudResume() {
           el.normalize() // merge adjacent text nodes
         })
         setAnimationState((prev) => ({ ...prev, stage: "paragraph-sway" }))
-        setOceanFillLevel(60)
+        setOceanFillLevel(76)
+      } else if (t < 32 && calmStageRef.current === 1) {
+        // Phase 1: rise water to just under the name (name floats on surface, rest submerged)
+        const fill = 28 + (t / 32) * 48
+        setOceanFillLevel(fill)
       }
     }, 250)
   }
