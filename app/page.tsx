@@ -286,6 +286,7 @@ export default function CloudResume() {
         "chaos-ramp-3",
         "chaos-swap-on",
         "chaos-clear",
+        "calm-swap-on",
       )
     }
   }, [animationState])
@@ -445,6 +446,7 @@ export default function CloudResume() {
 
   const startCalmExperience = () => {
     console.log("[v0] Starting calm experience...")
+    document.body.classList.add("calm-swap-on")
     // Store user's current theme so we can restore it on reset
     previousThemeRef.current = isDarkMode ? "dark" : "light"
 
@@ -869,16 +871,19 @@ export default function CloudResume() {
                 <Button onClick={scrollToContact} className="contact-button swap">
                   <span className="above-water">Contact Me</span>
                   <span className="under-water">Hire Me</span>
+                  <span className="chaos-water">Hire Me</span>
                 </Button>
               </div>
               <div className="download-buttons" data-water-reactive>
                 <a href="/Michael Walton Tech Resume - 2026.pdf" download className="btn swap">
                   <span className="above-water">Download PDF</span>
-                  <span className="under-water">The Artifact</span>
+                  <span className="under-water">Print Me. Frame Me.</span>
+                  <span className="chaos-water">The Artifact</span>
                 </a>
                 <a href="/Michael Walton Tech Resume - 2026.docx" download className="btn swap">
                   <span className="above-water">Download DOCX</span>
-                  <span className="under-water">Editable Evidence</span>
+                  <span className="under-water">Recruiter Mode</span>
+                  <span className="chaos-water">Editable Evidence</span>
                 </a>
               </div>
             </div>
@@ -887,8 +892,8 @@ export default function CloudResume() {
               Contact information available in downloadable resume
             </p>
             <p className="paragraph-block whitespace-normal break-words mb-2" data-water-reactive>
-              [<a href="https://www.linkedin.com/in/michael-walton84" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">LinkedIn</span><span className="under-water">The Suit Version</span></a>]{' | ['}
-              <a href="https://github.com/GreyKeyStudios" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">Secret Vault</span></a>{']'}
+              [<a href="https://www.linkedin.com/in/michael-walton84" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">LinkedIn</span><span className="under-water">Corporate Version Of Me</span><span className="chaos-water">The Suit Version</span></a>]{' | ['}
+              <a href="https://github.com/GreyKeyStudios" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">C0de Receipts</span><span className="chaos-water">Secret Vault</span></a>{']'}
             </p>
             <p className="paragraph-block whitespace-normal break-words" id="visitor-counter">
               {`You are visitor #${visits}`}
@@ -896,14 +901,14 @@ export default function CloudResume() {
           </header>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Information Technology Professional | Security+ Certified'}</span><span className="under-water">Very Hirable IT Human</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Information Technology Professional | Security+ Certified'}</span><span className="under-water">Very Hirable IT Human</span><span className="chaos-water">Very Hirable IT Human</span></h2>
             <p className="paragraph-block whitespace-normal break-words">
               {'Security+ certified IT professional with 10 years of experience supporting enterprise users and troubleshooting hardware/software/network issues. Built hands-on Cybersecurity portfolio projects including Splunk SIEM dashboards, incident case-files, and Python-based threat intelligence automation using VirusTotal, AbuseIPDB, and AlienVault OTX. Strong customer service skills, documentation, ticket-driven workflows, and clear communication of technical findings to both users and technical teams.'}
             </p>
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Certifications / Technical Proficiency'}</span><span className="under-water">Paper Armor</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Certifications / Technical Proficiency'}</span><span className="under-water">Yes, I Actually Studied</span><span className="chaos-water">Paper Armor</span></h2>
             <div className="paragraph-block whitespace-normal break-words grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-2">CERTIFICATIONS</h3>
@@ -932,7 +937,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Work Experience</span><span className="under-water">Battle Scars</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Work Experience</span><span className="under-water">Proof I've Survived IT</span><span className="chaos-water">Battle Scars</span></h2>
 
             <div className="paragraph-block whitespace-normal break-words mb-6">
               <div className="work-section">
@@ -1003,7 +1008,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Education</span><span className="under-water">The Lore</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Education</span><span className="under-water">The Knowledge Vault</span><span className="chaos-water">The Lore</span></h2>
 
             <div className="paragraph-block whitespace-normal break-words mb-4">
               <h3 className="text-lg font-semibold">CompTIA Security+ Certification</h3>
@@ -1040,7 +1045,7 @@ export default function CloudResume() {
           </div>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Projects and Labs</span><span className="under-water">The Laboratory</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">Projects and Labs</span><span className="under-water">Receipts (Scroll Below)</span><span className="chaos-water">The Laboratory</span></h2>
             <ul className="paragraph-block whitespace-normal break-words list-disc pl-6 space-y-3">
               <li><strong>Home Security Lab</strong>{' \u2013 Deployed a Splunk SIEM to monitor and analyze network traffic for threats.'}</li>
               <li><strong>TryHackMe Blue Team Labs</strong>{' \u2013 Completed hands-on labs in log analysis, threat detection, and incident response.'}</li>
@@ -1057,7 +1062,7 @@ export default function CloudResume() {
                 <span style={{ whiteSpace: "nowrap" }}>[<a href="https://soc.greykeystudios.dev" target="_blank" className="text-blue-600 hover:underline" rel="noreferrer">https://soc.greykeystudios.dev</a>]</span>
                 {' '}
                 <strong>GitHub:</strong>{' '}
-                <span style={{ whiteSpace: "nowrap" }}>[<a href="https://github.com/CyberSecurity-Projects.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">CyberSecurity-Projects</span><span className="under-water">Receipts</span></a>]</span>
+                <span style={{ whiteSpace: "nowrap" }}>[<a href="https://github.com/CyberSecurity-Projects.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">CyberSecurity-Projects</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</span>
               </li>
               <li>
                 <strong>Cloud Resume Challenge:</strong>{' Hey, you made it! '}
@@ -1071,7 +1076,7 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Web Development & Digital Presence'}</span><span className="under-water">Internet Wizardry Section</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Web Development & Digital Presence'}</span><span className="under-water">Internet Wizardry Section</span><span className="chaos-water">Internet Wizardry Section</span></h2>
             <div className="paragraph-block whitespace-normal break-words space-y-3">
               <p>{'Designed, built, and deployed multiple real-world websites using modern web stacks, focusing on performance, branding, accessibility, and secure deployment. Experienced with Cloudflare Pages hosting, Cloudflare DNS/subdomain management, Cloudflare R2 media storage, automated content workflows, API integrations, and e-commerce tools.'}</p>
               <h3 className="font-semibold mt-4">{'Websites Built / In Progress'}</h3>
@@ -1088,19 +1093,19 @@ export default function CloudResume() {
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Founder & Creative Director, Grey Key Studios'}</span><span className="under-water">I Make Music Too</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Founder & Creative Director, Grey Key Studios'}</span><span className="under-water">I Make Music Too</span><span className="chaos-water">I Make Music Too</span></h2>
             <p className="paragraph-block whitespace-normal break-words">
               Established and manage Grey Key Studios, an independent music label and creative platform. Oversee all aspects of music production, branding, and digital presence, including website development, artist identity creation, and release strategy.
             </p>
           </section>
 
           <section className="mb-8" data-water-reactive>
-            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Advanced Music Education & Production Suite'}</span><span className="under-water">Nerdy Music Wizardry</span></h2>
+            <h2 className="section-title text-2xl font-semibold text-blue-600 mb-4 swap"><span className="above-water">{'Advanced Music Education & Production Suite'}</span><span className="under-water">What Did I Get Myself Into?</span><span className="chaos-water">Nerdy Music Wizardry</span></h2>
             <p className="paragraph-block whitespace-normal break-words mb-3"><em>(in development)</em></p>
             <div className="paragraph-block whitespace-normal break-words space-y-3">
               <p>A digital audio workstation (DAW) and interactive music education platform integrating real-time audio processing, visualization, and adaptive learning. Developed using AI-assisted coding (Claude, ChatGPT, Cursor, v0) for architecture and implementation.</p>
               <p><strong>Technologies:</strong> TypeScript, React.js, Web Audio API, JUCE, WebAssembly, Node.js</p>
-              <p>{'Project available on '}[<a href="https://github.com/GreyKeyStudios/DreamVST.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">Receipts</span></a>]</p>
+              <p>{'Project available on '}[<a href="https://github.com/GreyKeyStudios/DreamVST.git" target="_blank" className="text-blue-600 hover:underline swap" rel="noreferrer"><span className="above-water">GitHub</span><span className="under-water">Receipts</span><span className="chaos-water">Receipts</span></a>]</p>
               <p>Various other projects in the works. Portfolio will be available shortly.</p>
             </div>
           </section>

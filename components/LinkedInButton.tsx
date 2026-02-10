@@ -17,7 +17,8 @@ export default function LinkedInButton() {
       <Linkedin size={20} />
       <span className="swap">
         <span className="above-water"><LetterWrapper animated={false} text="LinkedIn" /></span>
-        <span className="under-water">Me Again!</span>
+        <span className="under-water">Yes I'm Real</span>
+        <span className="chaos-water">Me Again!</span>
       </span>
     </Button>
   )
